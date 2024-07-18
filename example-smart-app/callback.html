@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Callback</title>
+  <script src='./lib/js/fhir-client-v0.1.12.js'></script>
+  <script src='./lib/js/fhir-client-cerner-additions-1.0.0.js'></script>
+  <script>
+    function onError(error) {
+      console.error(error);
+      document.body.innerHTML = '<p>Error: ' + error.message + '</p>';
+    }
+
+    FHIR.oauth2.ready()
+      .then(client => {
+        return client.request('Patient')
+          .then(patient => {
+            document.body.innerHTML = '<p>Patient: ' + patient.name[0].text + '</p>';
+          });
+      })
+      .catch(onError);
+  </script>
+</head>
+<body>
+  <p>Loading patient data...</p>
+</body>
+</html>
